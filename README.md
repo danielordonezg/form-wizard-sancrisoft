@@ -1,6 +1,6 @@
 # Company Wizard
 
-Un sencillo wizard de 3 pasos para enviar información de empresa vía `/api/submit`.
+Un form wizard de 3 pasos para enviar información de empresa vía `/api/submit`.
 
 ## Tech stack
 - Next.js 14 (React 18 + TypeScript)  
