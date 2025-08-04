@@ -24,6 +24,7 @@ import { businessSchema, contactSchema } from "../lib/validation";
 import { usePersistentState } from "../hooks/usePersistentState";
 import { BusinessData, ContactData, SubmitState, WizardData } from "../types";
 import { COMPANY_TYPES, COUNTRIES, US_STATES } from "@/constants/options";
+import { useMediaQuery } from "@/utils/useMediaQuery";
 
 const Grid = styled.div`
   display: contents;
@@ -116,7 +117,9 @@ export default function Home() {
       ? "success"
       : submitState === "error"
       ? "error"
-      : "inprogress";
+      : touched
+      ? "inprogress"
+      : null;
 
   const completed = {
     1: businessSchema.safeParse(data.business).success,
@@ -124,12 +127,32 @@ export default function Home() {
     3: submitState === "success",
   };
 
+  const focusCurrentStepFirstError = () => {
+    if (step === 1) {
+      const { errors } = validateAndFocus(
+        businessSchema,
+        data.business,
+        bizRefs
+      );
+      setBizErrors(errors);
+    } else if (step === 2) {
+      const { errors } = validateAndFocus(contactSchema, data.contact, ctcRefs);
+      setCtcErrors(errors);
+    }
+  };
+
   const goStep = (i: number) => {
     if (navLocked) return;
     if (i < step) setStep(i);
     if (i > step) {
-      if (step === 1 && !completed[1]) return;
-      if (step === 2 && !completed[2]) return;
+      if (step === 1 && !completed[1]) {
+        focusCurrentStepFirstError();
+        return;
+      }
+      if (step === 2 && !completed[2]) {
+        focusCurrentStepFirstError();
+        return;
+      }
       setStep(i);
     }
   };
@@ -237,6 +260,8 @@ export default function Home() {
       .replace(/(\d{3})(\d{3})(\d{0,4}).*/, "($1) $2-$3")
       .trim();
 
+  const isMobile = useMediaQuery("(max-width: 560px)");
+
   return (
     <Layout statusLabel={statusPill as any}>
       <Grid>
@@ -246,7 +271,7 @@ export default function Home() {
             completed={completed}
             onNavigate={goStep}
             disabled={navLocked}
-            compact={false}
+            compact={isMobile}
           />
         </Left>
 

@@ -92,15 +92,17 @@ export function Layout({
   statusLabel,
 }: {
   children: ReactNode;
-  statusLabel: "inprogress" | "success" | "error";
+  statusLabel?: "inprogress" | "success" | "error" | null;
 }) {
   return (
     <Shell>
       <HeaderBar>
         <h1>New Company</h1>
-        <Tag tone={statusLabel}>
-          {statusLabel === "inprogress" ? "In progress" : statusLabel}
-        </Tag>
+        {statusLabel ? (
+          <Tag tone={statusLabel}>
+            {statusLabel === "inprogress" ? "In progress" : statusLabel}
+          </Tag>
+        ) : null}
       </HeaderBar>
       <Divider />
       {children}

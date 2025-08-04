@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Form = styled.form`
   max-width: 660px;
@@ -69,11 +69,30 @@ export const Select = styled.select<{ invalid?: boolean }>`
   }
 `;
 
-export const Help = styled.p<{ tone?: "error" | "muted" }>`
+export const Help = styled.p<{
+  tone?: "error" | "muted";
+}>`
+  display: flex;
+  align-items: center;
   margin: 6px 0 0;
   font-size: 12px;
   color: ${({ tone, theme }) =>
     tone === "error" ? theme.colors.error : theme.colors.subtleText};
+
+  ${({ tone }) =>
+    tone === "error" &&
+    css`
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        background-image: url(https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+    `}
 `;
 
 export const Actions = styled.div`

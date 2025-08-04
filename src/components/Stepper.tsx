@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@/utils/useMediaQuery";
 import styled from "styled-components";
 
 const Wrap = styled.div`
@@ -86,7 +87,7 @@ export function Stepper({
   completed,
   onNavigate,
   disabled,
-  compact,
+  compact = false,
 }: {
   current: number;
   completed: Record<number, boolean>;
@@ -94,6 +95,7 @@ export function Stepper({
   disabled?: boolean;
   compact?: boolean;
 }) {
+  const isMobile = useMediaQuery("(max-width: 560px)");
   const labels = ["Business structure", "Contact person", "Review & submit"];
   return (
     <Wrap aria-label="Steps">
@@ -111,9 +113,9 @@ export function Stepper({
             aria-current={isActive ? "step" : undefined}
           >
             <Bullet active={isActive} done={isDone}>
-              {isDone ? "✓" : idx}
+              {isMobile ? idx : isDone ? "✓" : idx}
             </Bullet>
-            {compact ? null : <Label>{label}</Label>}
+            {compact || isMobile ? null : <Label>{label}</Label>}
           </Item>
         );
       })}
