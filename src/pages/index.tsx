@@ -30,10 +30,6 @@ const Grid = styled.div`
   display: contents;
 `;
 
-const TitleBlock = styled.div`
-  margin-bottom: 6px;
-`;
-
 const Stack = styled.div`
   display: flex;
   flex-direction: column;
@@ -195,15 +191,6 @@ export default function Home() {
 
   const bizRefs: Record<string, HTMLInputElement | null> = {};
   const ctcRefs: Record<string, HTMLInputElement | null> = {};
-
-  const canContinue1 = useMemo(
-    () => businessSchema.safeParse(data.business).success,
-    [data.business]
-  );
-  const canContinue2 = useMemo(
-    () => contactSchema.safeParse(data.contact).success,
-    [data.contact]
-  );
 
   const validateField = (schema: any, key: string, value: any) => {
     const sub = schema.pick({ [key]: true });
